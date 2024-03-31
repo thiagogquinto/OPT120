@@ -11,6 +11,7 @@ router.get('/listUsers', UserController.listUsers)
 router.get('/getUser/:id', UserController.getUser)
 router.put('/updateUser/:id', UserController.updateUser)
 router.delete('/deleteUser/:id', UserController.deleteUser)
+router.post('/login', UserController.login)
 
 router.post('/newAtividade', AtividadeController.newAtividade)
 router.get('/listAtividades', AtividadeController.listAtividades)

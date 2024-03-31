@@ -14,7 +14,7 @@ class AtividadeController{
 
     listAtividades(request, response){
         database.select("*").table("atividade").then(atividades=>{
-            response.json(atividades)
+            response.status(200).json(atividades)
         }).catch(error=>{
             console.error(error)
         })

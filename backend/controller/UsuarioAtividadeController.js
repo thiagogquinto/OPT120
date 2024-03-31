@@ -1,12 +1,18 @@
+const { parse } = require('dotenv');
 const database = require('../database/connection')
 
 class UsuarioAtividadeController{
 
     newUsuarioAtividade(request, response){
-        const {usuario_id, atividade_id, entrega, nota} = request.body;
+        const {usuario_id, atividade_id, entrega} = request.body;
+
+        let nota = request.body.nota;
+        nota = parseFloat(nota);
+
+        console.log(usuario_id, atividade_id, entrega, nota)
 
         database.insert({usuario_id, atividade_id, entrega, nota}).table("usuario_atividade").then(data=>{
-            response.json({message: "Entrega de atividade marcada com sucesso!"})
+            response.status(200).json({message: "Entrega de atividade marcada com sucesso!"})
         }).catch(error=>{
             console.error(error)
         })

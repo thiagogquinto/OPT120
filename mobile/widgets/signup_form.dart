@@ -15,7 +15,6 @@ class _SignUpFormState extends State<SignUpForm> {
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
   final _senhaController = TextEditingController();
-  // final _confirmarSenhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,6 @@ class _SignUpFormState extends State<SignUpForm> {
         buildInputForm('Nome', false, _nomeController),
         buildInputForm('Email', false, _emailController),
         buildInputForm('Senha', true, _senhaController),
-        // buildInputForm('Confirme a senha', true, _confirmarSenhaController),
         SizedBox(
           height: 20,
         ),

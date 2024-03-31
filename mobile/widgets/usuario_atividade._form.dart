@@ -4,22 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:helloworld/screens/home.dart';
 
-class AtividadeForm extends StatefulWidget {
+class UsuarioAtividadeForm extends StatefulWidget {
   final int userId;
   final String userName;
+  final List<dynamic> atividades;
 
-  const AtividadeForm({Key? key, required this.userId, required this.userName})
+  const UsuarioAtividadeForm(
+      {Key? key,
+      required this.userId,
+      required this.userName,
+      required this.atividades})
       : super(key: key);
 
   @override
-  _AtividadeFormState createState() => _AtividadeFormState();
+  _UsuarioAtividadeFormState createState() => _UsuarioAtividadeFormState();
 }
 
-class _AtividadeFormState extends State<AtividadeForm> {
+class _UsuarioAtividadeFormState extends State<UsuarioAtividadeForm> {
   final _formKey = GlobalKey<FormState>();
-  final _tituloController = TextEditingController();
-  final _descricaoController = TextEditingController();
+  final _notaController = TextEditingController();
   DateTime? _selectedDate;
+  int? _selectedAtividade;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -37,17 +42,17 @@ class _AtividadeFormState extends State<AtividadeForm> {
 
   Future<void> _createAtividade(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      final url = 'http://localhost:4000/newAtividade';
+      final url = 'http://localhost:4000/newUsuarioAtividade';
       final response = await http.post(
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'titulo': _tituloController.text,
-          'descricao': _descricaoController.text,
-          // 'data': _selectedDate,
-          'dia': _selectedDate != null ? _selectedDate!.toString() : null,
+          'usuario_id': widget.userId,
+          'atividade_id': _selectedAtividade,
+          'nota': _notaController.text,
+          'entrega': _selectedDate != null ? _selectedDate!.toString() : null,
         }),
       );
 
@@ -56,9 +61,9 @@ class _AtividadeFormState extends State<AtividadeForm> {
             context,
             MaterialPageRoute(
                 builder: (context) => Home(
-                      userId: widget.userId,
-                      userName: widget.userName,
-                    )));
+                    userId: widget.userId,
+                    userName: widget.userName,
+                )));
       }
     }
   }
@@ -69,22 +74,35 @@ class _AtividadeFormState extends State<AtividadeForm> {
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
-            controller: _tituloController,
-            decoration: InputDecoration(labelText: 'Título'),
+          DropdownButtonFormField<int>(
+            value: _selectedAtividade,
+            onChanged: (value) {
+              setState(() {
+                _selectedAtividade = value;
+              });
+            },
+            items: widget.atividades.map<DropdownMenuItem<int>>((atividade) {
+              return DropdownMenuItem<int>(
+                value: atividade['id'],
+                child: Text(atividade['titulo']),
+              );
+            }).toList(),
+            decoration: InputDecoration(
+              labelText: 'Atividade',
+            ),
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Por favor, insira um título';
+              if (value == null) {
+                return 'Por favor, selecione uma atividade';
               }
               return null;
             },
           ),
           TextFormField(
-            controller: _descricaoController,
-            decoration: InputDecoration(labelText: 'Descrição'),
+            controller: _notaController,
+            decoration: InputDecoration(labelText: 'Nota'),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Por favor, insira uma descrição';
+                return 'Por favor, insira uma nota';
               }
               return null;
             },
@@ -94,7 +112,7 @@ class _AtividadeFormState extends State<AtividadeForm> {
             readOnly: true,
             onTap: () => _selectDate(context),
             decoration: InputDecoration(
-              labelText: 'Data',
+              labelText: 'Data de Entrega',
               suffixIcon: Icon(Icons.calendar_today),
             ),
             controller: TextEditingController(

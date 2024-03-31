@@ -2,46 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:helloworld/screens/login.dart';
 import 'package:helloworld/theme.dart';
 import 'package:helloworld/widgets/signup_form.dart';
-import 'package:helloworld/widgets/primary_button.dart';
 
 class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 70,
-          ),
-          Padding(
-            padding: kDefaultPadding,
-            child: Text(
-              'Criar Conta',
-              style: titleText,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 70,
             ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Padding(
-            padding: kDefaultPadding,
-            child: Row(
-              children: [
-                Text(
-                  'Já tem uma conta?',
-                  style: subTitle,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                GestureDetector(
+            Padding(
+              padding: kDefaultPadding,
+              child: Text(
+                'Criar Conta',
+                style: titleText,
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding: kDefaultPadding,
+              child: Row(
+                children: [
+                  Text(
+                    'Já tem uma conta?',
+                    style: subTitle,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LogInScreen()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LogInScreen()
+                        )
+                      );
                     },
                     child: Text(
                       'Entrar',
@@ -49,7 +50,8 @@ class SignUpScreen extends StatelessWidget {
                         decoration: TextDecoration.underline,
                         decorationThickness: 1,
                       ),
-                    ))
+                    )
+                  )
               ],
             ),
           ),
@@ -63,12 +65,6 @@ class SignUpScreen extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          // Padding(
-          //   padding: kDefaultPadding,
-          //   child: PrimaryButton(
-          //     buttonText: 'Criar Conta',
-          //   ),
-          // )
         ],
       )),
     );

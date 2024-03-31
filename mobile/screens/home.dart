@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:helloworld/screens/atividade.dart';
+import 'package:helloworld/screens/usuario_atividade.dart';
 
 class Home extends StatelessWidget {
   final int userId;
@@ -15,35 +16,41 @@ class Home extends StatelessWidget {
         title: Text('Olá, $userName'),
       ),
       body: Center(
-          child: Column(
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(
             height: 20,
           ),
           ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Atividade(
-                            userId: userId,
-                            userName: userName,
-                          )),
-                );
-              },
-              child: Text('Adicionar Atividade')),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Atividade(
+                    userId: userId,
+                    userName: userName,
+                  )),
+              );
+            },
+            child: Text('Adicionar Atividade')),
           SizedBox(
             height: 20,
           ),
           ElevatedButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Atividade()),
-                // );
-              },
-              child: Text('Adicionar Entrega')),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UsuarioAtividade(
+                    userId: userId,
+                    userName: userName,
+                  )
+                ),
+              );
+            },
+            child: Text('Adicionar Entrega')
+          ),
         ],
       )),
     );

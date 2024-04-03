@@ -24,5 +24,7 @@ router.get('/listUsuarioAtividades', UsuarioAtividadeController.listUsuarioAtivi
 router.get('/getUsuarioAtividade/:id', UsuarioAtividadeController.getUsuarioAtividade)
 router.put('/updateUsuarioAtividade/:id', UsuarioAtividadeController.updateUsuarioAtividade)
 router.delete('/deleteUsuarioAtividade/:id', UsuarioAtividadeController.deleteUsuarioAtividade)
+router.get('/hasEntrega/:atividade_id', UsuarioAtividadeController.hasEntrega)
+router.get('/getEntrega/:atividade_id', UsuarioAtividadeController.getEntrega)
 
 module.exports = router

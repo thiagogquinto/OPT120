@@ -9,8 +9,6 @@ class UsuarioAtividadeController{
         let nota = request.body.nota;
         nota = parseFloat(nota);
 
-        console.log(usuario_id, atividade_id, entrega, nota)
-
         database.insert({usuario_id, atividade_id, entrega, nota}).table("usuario_atividade").then(data=>{
             response.status(200).json({message: "Entrega de atividade marcada com sucesso!"})
         }).catch(error=>{
@@ -62,12 +60,10 @@ class UsuarioAtividadeController{
     
         database.select("entrega").table("usuario_atividade").where({atividade_id: atividade_id}).then(entrega=>{
             if(entrega.length > 0) {
-                console.log(entrega[0].entrega)
                 let data = new Date(entrega[0].entrega);
                 let dia = data.getDate();
                 let mes = data.getMonth() + 1;
                 let ano = data.getFullYear();
-                console.log(`${dia}/${mes}/${ano}`)
                 response.status(200).json(`${dia}/${mes}/${ano}`);
             } else {
                 response.status(200).json('-');
@@ -79,11 +75,9 @@ class UsuarioAtividadeController{
 
     getEntrega(request, response){
         const atividade_id = request.params.atividade_id;
-        console.log(atividade_id)
     
         database.select("*").table("usuario_atividade").where({atividade_id: atividade_id}).then(entrega=>{
             if(entrega.length > 0) {
-                console.log(entrega[0])
                 response.status(200).json(entrega[0]);
             } else {
                 response.status(200).json('-');

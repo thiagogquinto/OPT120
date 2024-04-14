@@ -15,7 +15,7 @@ class UserController{
 
         database.insert({nome, email, password}).table("usuario").then(data=>{
             const token = generateToken({id: data[0]})
-            response.status(201).json({token: token, message: "Usuário criado com sucesso!"})
+            response.status(201).json({id: data[0], nome: nome, token: token, message: "Usuário criado com sucesso!"})
         }).catch(error=>{
             response.status(400).json({message: "Erro ao criar usuário!", error: error})
         })

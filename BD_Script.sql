@@ -2,7 +2,7 @@ CREATE TABLE usuario (
 	id INTEGER AUTO_INCREMENT,
 	nome VARCHAR(255),
 	email VARCHAR(255),
-	password VARCHAR(50),
+	password VARCHAR(500),
 	PRIMARY KEY(id)
 );
 

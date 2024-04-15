@@ -4,13 +4,12 @@ const bcrypt = require('bcryptjs');
 
 require('dotenv').config();
 
-const generateToken = require('../auth/auth')
+const { generateToken, verifyToken } = require('../auth/auth');
 
 class UserController{ 
 
     newUser(request, response){
         var {nome, email, password} = request.body;
-
         password = bcrypt.hashSync(password, 8);
 
         database.insert({nome, email, password}).table("usuario").then(data=>{
@@ -61,7 +60,6 @@ class UserController{
     }
 
     login(request, response){
-      
         const {email, password} = request.body;
 
         database.select("*").table("usuario").where({email: email}).then(user=>{
@@ -77,6 +75,10 @@ class UserController{
         }).catch(error=>{
             response.status(400).json({message: "Erro ao realizar login!"})
         })
+    }
+
+    logout(request, response){
+        response.status(200).json({token: null})
     }
 }
 

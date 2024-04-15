@@ -10,5 +10,6 @@ router.get('/getUser/:id', UserController.getUser)
 router.put('/updateUser/:id', UserController.updateUser)
 router.delete('/deleteUser/:id', UserController.deleteUser)
 router.get('/listUsers', UserController.listUsers)
+router.get('/logout', UserController.logout)
 
 module.exports = router

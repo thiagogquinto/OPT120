@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:helloworld/screens/login.dart';
-import 'package:helloworld/theme.dart';
-import 'package:helloworld/widgets/signup_form.dart';
+import 'package:mobile/screens/login.dart';
+import 'package:mobile/theme.dart';
+import 'package:mobile/widgets/signup_form.dart';
 
 class SignUpScreen extends StatelessWidget {
   @override
@@ -62,12 +62,6 @@ class SignUpScreen extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          // Padding(
-          //   padding: kDefaultPadding,
-          //   child: PrimaryButton(
-          //     buttonText: 'Criar Conta',
-          //   ),
-          // )
         ],
       )),
     );

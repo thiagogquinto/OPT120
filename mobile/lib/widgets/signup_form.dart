@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:helloworld/theme.dart';
+import 'package:mobile/theme.dart';
 import 'package:http/http.dart' as http;
-import 'package:helloworld/screens/login.dart';
-import 'package:helloworld/screens/home.dart';
+import 'package:mobile/screens/login.dart';
+import 'package:mobile/screens/home.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -90,8 +90,6 @@ class _SignUpFormState extends State<SignUpForm> {
     );
 
     if (response.statusCode == 201) {
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => LogInScreen()));
       final jsonResponse = jsonDecode(response.body);
       final userId = jsonResponse['id'];
       final userName = jsonResponse['nome'];

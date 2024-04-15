@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:helloworld/theme.dart";
-import "package:helloworld/widgets/atividade_form.dart";
+import "package:mobile/theme.dart";
+import "package:mobile/widgets/atividade_form.dart";
 
 class Atividade extends StatelessWidget {
   final int userId;

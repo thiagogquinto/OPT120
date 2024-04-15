@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:helloworld/screens/home.dart';
+import 'package:mobile/screens/home.dart';
+import 'package:mobile/screens/login.dart';
 
 class AtividadeForm extends StatefulWidget {
   final int userId;
@@ -47,6 +48,7 @@ class _AtividadeFormState extends State<AtividadeForm> {
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
+          'X-Access-Token': widget.token
         },
         body: jsonEncode({
           'titulo': _tituloController.text,
@@ -64,6 +66,9 @@ class _AtividadeFormState extends State<AtividadeForm> {
                     userId: widget.userId,
                     userName: widget.userName,
                     token: widget.token)));
+      } else if (response.statusCode == 401) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LogInScreen()));
       }
     }
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:helloworld/theme.dart';
-import 'package:helloworld/widgets/usuario_atividade_form.dart';
+import 'package:mobile/theme.dart';
+import 'package:mobile/widgets/usuario_atividade_form.dart';
 
 class UsuarioAtividade extends StatefulWidget {
   final int userId;

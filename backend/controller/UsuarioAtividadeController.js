@@ -1,10 +1,17 @@
 const { parse } = require('dotenv');
 const database = require('../database/connection')
 
+const { verifyToken } = require('../auth/auth');
 class UsuarioAtividadeController{
 
     newUsuarioAtividade(request, response){
         const {usuario_id, atividade_id, entrega} = request.body;
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
 
         let nota = request.body.nota;
         nota = parseFloat(nota);

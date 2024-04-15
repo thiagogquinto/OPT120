@@ -1,9 +1,17 @@
 const database = require('../database/connection')
 
+const { verifyToken } = require('../auth/auth');
+
 class AtividadeController{
 
     newAtividade(request, response){
         const {titulo, descricao, dia} = request.body;
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
 
         database.insert({titulo, descricao, dia}).table("atividade").then(data=>{
             response.json({message: "Atividade criada com sucesso!"})
@@ -50,7 +58,6 @@ class AtividadeController{
             console.error(error)
         })
     }
-    
 }
 
 module.exports = new AtividadeController();

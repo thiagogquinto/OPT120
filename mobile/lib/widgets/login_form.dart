@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:helloworld/theme.dart';
-import 'package:helloworld/screens/home.dart';
+import 'package:mobile/theme.dart';
+import 'package:mobile/screens/home.dart';
 import 'package:http/http.dart' as http;
 
 class LogInForm extends StatefulWidget {

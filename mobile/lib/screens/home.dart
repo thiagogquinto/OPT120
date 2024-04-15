@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/screens/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:helloworld/screens/atividade.dart';
-import 'package:helloworld/screens/usuario_atividade.dart';
+import 'package:mobile/screens/atividade.dart';
+import 'package:mobile/screens/usuario_atividade.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatelessWidget {
@@ -128,6 +129,13 @@ class Home extends StatelessWidget {
                   ),
                 );
               },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Sair'),
+              onTap: () {
+                LogOut(context);
+              },
             )
           ],
         ),
@@ -140,9 +148,7 @@ class Home extends StatelessWidget {
     final url = 'http://localhost:4000/updateUser/$userId';
     final response = await http.put(
       Uri.parse(url),
-      headers: {
-        'Content-Type': 'application/json', // Especifica que os dados são JSON
-      },
+      headers: {'Content-Type': 'application/json', 'X-Access-Token': token},
       body: jsonEncode({
         'nome': nome,
         'email': email,
@@ -183,6 +189,23 @@ class Home extends StatelessWidget {
     }
   }
 
+  void LogOut(BuildContext context) async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://localhost:4000/logout'));
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LogInScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Erro ao carregar atividades: $e');
+    }
+  }
+
   String formatDate(String dateString) {
     DateTime dateTime = DateTime.parse(dateString);
     return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
@@ -214,7 +237,6 @@ class Home extends StatelessWidget {
       final response = await http
           .get(Uri.parse('http://localhost:4000/getEntrega/$atividade_id'));
       if (response.statusCode == 200) {
-        print(response.body);
         return json.decode(response.body);
       } else {
         throw Exception('Failed to load entregas');
@@ -248,8 +270,6 @@ class Home extends StatelessWidget {
 
   void showUserDetails(BuildContext context, int userId) async {
     final user = await fetchUser(userId);
-    print("object");
-    print(user);
     _showUserDetailsDialog(context, userId, user);
   }
 

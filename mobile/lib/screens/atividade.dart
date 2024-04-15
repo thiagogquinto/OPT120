@@ -46,7 +46,6 @@ class Atividade extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            // PrimaryButton(buttonText: 'Entrar')
           ],
         ),
       ),

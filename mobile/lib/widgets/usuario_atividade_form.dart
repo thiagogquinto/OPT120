@@ -50,7 +50,7 @@ class _UsuarioAtividadeFormState extends State<UsuarioAtividadeForm> {
         Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
-          'X-Acces-Token': widget.token
+          'X-Access-Token': widget.token
         },
         body: jsonEncode({
           'usuario_id': widget.userId,

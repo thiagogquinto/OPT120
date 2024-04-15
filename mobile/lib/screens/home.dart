@@ -62,7 +62,6 @@ class Home extends StatelessWidget {
                             cells: [
                               DataCell(Text(atividade['titulo'])),
                               DataCell(Text(formatDate(atividade['dia']))),
-                              // DataCell(Text(atividade['entrega']))
                               DataCell(atividade['entrega'] == '"-"'
                                   ? TextButton(
                                       onPressed: () {
@@ -84,7 +83,6 @@ class Home extends StatelessWidget {
                                             context, atividade['id']);
                                       },
                                       child: Text(atividade['entrega']),
-                                      // atividade['entrega']
                                     ))
                             ],
                           );
@@ -153,6 +151,24 @@ class Home extends StatelessWidget {
         'nome': nome,
         'email': email,
         'password': senha,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return 'ok';
+    } else {
+      return 'erro';
+    }
+  }
+
+  Future<String> updateEntrega(
+      BuildContext context, String nota, int atividade_id) async {
+    final url = 'http://localhost:4000/updateUsuarioAtividade/$atividade_id';
+    final response = await http.patch(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json', 'X-Access-Token': token},
+      body: jsonEncode({
+        'nota': nota,
       }),
     );
 
@@ -265,7 +281,7 @@ class Home extends StatelessWidget {
   void showEntregaDetails(BuildContext context, int atividade_id) async {
     final data = await fetchEntrega(atividade_id);
     int nota = data['nota'];
-    _showEntregaDetailsDialog(context, nota);
+    _showEntregaDetailsDialog(context, nota, atividade_id);
   }
 
   void showUserDetails(BuildContext context, int userId) async {
@@ -280,8 +296,7 @@ class Home extends StatelessWidget {
         TextEditingController(text: user['nome']);
     TextEditingController emailController =
         TextEditingController(text: user['email']);
-    TextEditingController passwordController =
-        TextEditingController(text: user['password']);
+    TextEditingController passwordController = TextEditingController(text: '');
 
     showDialog(
         context: context,
@@ -335,7 +350,9 @@ class Home extends StatelessWidget {
                           context,
                           nameController.text,
                           emailController.text,
-                          passwordController.text,
+                          passwordController.text == ''
+                              ? user['password']
+                              : passwordController.text,
                           userId),
                       child: Text('Atualizar usuário'),
                     )
@@ -347,28 +364,58 @@ class Home extends StatelessWidget {
         });
   }
 
-  void _showEntregaDetailsDialog(BuildContext context, int nota) {
+  void _showEntregaDetailsDialog(
+      BuildContext context, int nota, int atividade_id) {
+    bool isEditing = false;
+    final _notaController = TextEditingController(text: nota.toString());
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Detalhes da Entrega'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Nota: $nota'),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Fechar'),
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Detalhes'),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isEditing = !isEditing;
+                        });
+                      },
+                      icon: Icon(Icons.edit))
+                ]),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _notaController,
+                  enabled: isEditing,
+                  decoration: InputDecoration(labelText: 'Nota'),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () => updateEntrega(
+                      context, _notaController.text, atividade_id),
+                  child: Text('Atualizar Nota'),
+                )
+              ],
             ),
-          ],
-        );
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Fechar'),
+              ),
+            ],
+          );
+        });
       },
     );
   }

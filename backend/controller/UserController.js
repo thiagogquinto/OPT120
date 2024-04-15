@@ -6,6 +6,10 @@ require('dotenv').config();
 
 const { generateToken, verifyToken } = require('../auth/auth');
 
+function isBcryptHash(s) {
+    return /^\$2[aby]\$/.test(s);
+}
+
 class UserController{ 
 
     newUser(request, response){
@@ -41,6 +45,17 @@ class UserController{
     updateUser(request, response){
         const id = request.params.id;
         const {nome, email, password} = request.body;
+
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+
+        if(!isBcryptHash(password)){
+            password = bcrypt.hashSync(password, 8);
+        }
 
         database.where({id: id}).update({nome, email, password}).table("usuario").then(data=>{
            response.status(200).json({message: "Usuário atualizado com sucesso!"})

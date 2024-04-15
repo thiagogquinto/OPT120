@@ -8,19 +8,19 @@ class UsuarioAtividadeController{
         const {usuario_id, atividade_id, entrega} = request.body;
         const token = request.headers['x-access-token'];
         const verified = verifyToken(token);
-
+        
         if(!verified){
             response.status(401).json({message: "Token inválido!"})
+        } else {
+            let nota = request.body.nota;
+            nota = parseFloat(nota);
+
+            database.insert({usuario_id, atividade_id, entrega, nota}).table("usuario_atividade").then(data=>{
+                response.status(200).json({message: "Entrega de atividade marcada com sucesso!"})
+            }).catch(error=>{
+                console.error(error)
+            })
         }
-
-        let nota = request.body.nota;
-        nota = parseFloat(nota);
-
-        database.insert({usuario_id, atividade_id, entrega, nota}).table("usuario_atividade").then(data=>{
-            response.status(200).json({message: "Entrega de atividade marcada com sucesso!"})
-        }).catch(error=>{
-            console.error(error)
-        })
     }
 
     listUsuarioAtividades(request, response){
@@ -47,6 +47,26 @@ class UsuarioAtividadeController{
 
         database.where({id:id}).update({usuario_id:usuario_id, atividade_id:atividade_id}).table("usuario_atividade").then(data=>{
             response.json({message: "Relacionamento atualizado com sucesso!"})
+        }).catch(error=>{
+            console.error(error)
+        })
+    }
+
+    updateUsuarioAtividadeNota(request, response){
+        const atividade_id = request.params.id;
+        let  {nota} = request.body;
+
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+
+        nota = parseFloat(nota);
+
+        database.where({atividade_id:atividade_id}).update({nota:nota}).table("usuario_atividade").then(data=>{
+            response.status(200).json({message: "Nota atualizada com sucesso!"})
         }).catch(error=>{
             console.error(error)
         })

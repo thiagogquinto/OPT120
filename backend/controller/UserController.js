@@ -67,9 +67,17 @@ class UserController{
     deleteUser(request, response){
         const id = request.params.id;
 
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+
         database.where({id: id}).delete().table("usuario").then(data=>{
             response.status(200).json({message: "Usuário deletado com sucesso!"})
         }).catch(error=>{
+            console.log(error)
             response.status(400).json({message: "Erro ao deletar usuário!"})
         })
     }

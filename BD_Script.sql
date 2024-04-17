@@ -19,7 +19,7 @@ CREATE TABLE usuario_atividade (
     atividade_id INTEGER,
     entrega DATE,
     nota DECIMAL,
-    FOREIGN KEY(usuario_id) REFERENCES usuario(id),
-    FOREIGN KEY(atividade_id) REFERENCES atividade(id)
+    FOREIGN KEY(usuario_id) REFERENCES usuario(id) ON DELETE CASCADE,
+    FOREIGN KEY(atividade_id) REFERENCES atividade(id) ON DELETE CASCADE
 );
 

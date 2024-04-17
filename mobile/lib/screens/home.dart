@@ -62,6 +62,7 @@ class Home extends StatelessWidget {
                             cells: [
                               DataCell(Text(atividade['titulo'])),
                               DataCell(Text(formatDate(atividade['dia']))),
+                              // DataCell(Text(atividade['entrega']))
                               DataCell(atividade['entrega'] == '"-"'
                                   ? TextButton(
                                       onPressed: () {
@@ -83,6 +84,7 @@ class Home extends StatelessWidget {
                                             context, atividade['id']);
                                       },
                                       child: Text(atividade['entrega']),
+                                      // atividade['entrega']
                                     ))
                             ],
                           );
@@ -176,6 +178,24 @@ class Home extends StatelessWidget {
       return 'ok';
     } else {
       return 'erro';
+    }
+  }
+
+  void deleteUser(BuildContext context, int userId) async {
+    final url = 'http://localhost:4000/deleteUser/$userId';
+    print('aqui - DELETE');
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json', 'X-Access-Token': token},
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LogInScreen(),
+        ),
+      );
     }
   }
 
@@ -314,7 +334,13 @@ class Home extends StatelessWidget {
                             isEditing = !isEditing;
                           });
                         },
-                        icon: Icon(Icons.edit))
+                        icon: Icon(Icons.edit)),
+                    IconButton(
+                      onPressed: () {
+                        deleteUser(context, userId);
+                      },
+                      icon: Icon(Icons.delete),
+                    )
                   ],
                 ),
                 content: Column(

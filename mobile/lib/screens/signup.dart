@@ -8,41 +8,39 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 70,
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 70,
+          ),
+          Padding(
+            padding: kDefaultPadding,
+            child: Text(
+              'Criar Conta',
+              style: titleText,
             ),
-            Padding(
-              padding: kDefaultPadding,
-              child: Text(
-                'Criar Conta',
-                style: titleText,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: Row(
-                children: [
-                  Text(
-                    'Já tem uma conta?',
-                    style: subTitle,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Padding(
+            padding: kDefaultPadding,
+            child: Row(
+              children: [
+                Text(
+                  'Já tem uma conta?',
+                  style: subTitle,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                GestureDetector(
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LogInScreen()
-                        )
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LogInScreen()));
                     },
                     child: Text(
                       'Entrar',
@@ -50,24 +48,22 @@ class SignUpScreen extends StatelessWidget {
                         decoration: TextDecoration.underline,
                         decorationThickness: 1,
                       ),
-                    )
-                  )
-                ],
-              ),
+                    ))
+              ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: kDefaultPadding,
-              child: SignUpForm(),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
-        )
-      ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: kDefaultPadding,
+            child: SignUpForm(),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+        ],
+      )),
     );
   }
 }

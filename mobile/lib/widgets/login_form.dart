@@ -24,15 +24,14 @@ class _LogInFormState extends State<LogInForm> {
           height: 20,
         ),
         ElevatedButton(
-          onPressed: () {
-            login(
-              context,
-              _emailController.text,
-              _senhaController.text,
-            );
-          },
-          child: Text('Entrar')
-        )
+            onPressed: () {
+              login(
+                context,
+                _emailController.text,
+                _senhaController.text,
+              );
+            },
+            child: Text('Entrar'))
       ],
     );
   }
@@ -45,26 +44,26 @@ class _LogInFormState extends State<LogInForm> {
         controller: controller,
         obscureText: pass ? _isObscure : false,
         decoration: InputDecoration(
-          labelText: label,
-          labelStyle: TextStyle(
-            color: kTextFieldColor,
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: kPrimaryColor),
-          ),
-          suffixIcon: pass
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isObscure = !_isObscure;
-                  });
-                },
-                icon: Icon(
-                  _isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: kPrimaryColor,
-                  ),
-              )
-            : null),
+            labelText: label,
+            labelStyle: TextStyle(
+              color: kTextFieldColor,
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: kPrimaryColor),
+            ),
+            suffixIcon: pass
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                    icon: Icon(
+                      _isObscure ? Icons.visibility_off : Icons.visibility,
+                      color: kPrimaryColor,
+                    ),
+                  )
+                : null),
       ),
     );
   }

@@ -33,6 +33,13 @@ class UserController{
     }
 
     getUser(request, response){
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+        
         const id = request.params.id;
 
         database.select("*").table("usuario").where({id: id}).then(user=>{

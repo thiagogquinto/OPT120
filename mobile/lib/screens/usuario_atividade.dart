@@ -32,7 +32,9 @@ class _UsuarioAtividadeState extends State<UsuarioAtividade> {
 
   Future<void> fetchAtividades() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:4000/listAtividades'));
+      final response = await http.get(
+          Uri.parse('http://localhost:4000/listAtividades'),
+          headers: {'X-Access-Token': widget.token});
       if (response.statusCode == 200) {
         setState(() {
           atividades = jsonDecode(response.body);
@@ -74,13 +76,14 @@ class _UsuarioAtividadeState extends State<UsuarioAtividade> {
               height: 10,
             ),
             UsuarioAtividadeForm(
-              userId: widget.userId,
-              userName: widget.userName,
-              token: widget.token,
-              atividades: atividades),
+                userId: widget.userId,
+                userName: widget.userName,
+                token: widget.token,
+                atividades: atividades),
             SizedBox(
               height: 20,
             ),
+            // PrimaryButton(buttonText: 'Entrar')
           ],
         ),
       ),

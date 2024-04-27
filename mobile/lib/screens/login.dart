@@ -31,22 +31,21 @@ class LogInScreen extends StatelessWidget {
                   width: 5,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignUpScreen(),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Cadastrar-se',
+                      style: textButton.copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 1,
                       ),
-                    );
-                  },
-                  child: Text(
-                    'Cadastrar-se',
-                    style: textButton.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationThickness: 1,
-                    ),
-                  )
-                ),
+                    )),
               ],
             ),
             SizedBox(
@@ -56,6 +55,7 @@ class LogInScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
+            // PrimaryButton(buttonText: 'Entrar')
           ],
         ),
       ),

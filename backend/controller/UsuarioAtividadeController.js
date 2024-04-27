@@ -32,6 +32,13 @@ class UsuarioAtividadeController{
     }
 
     getUsuarioAtividade(request, response){
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+
         const id = request.params.id;
 
         database.select("*").table("usuario_atividade").where({id:id}).then(usuario_atividade=>{
@@ -83,6 +90,13 @@ class UsuarioAtividadeController{
     }
 
     hasEntrega(request, response){
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+
         const atividade_id = request.params.atividade_id;
     
         database.select("entrega").table("usuario_atividade").where({atividade_id: atividade_id}).then(entrega=>{
@@ -101,6 +115,13 @@ class UsuarioAtividadeController{
     }
 
     getEntrega(request, response){
+        const token = request.headers['x-access-token'];
+        const verified = verifyToken(token);
+
+        if(!verified){
+            response.status(401).json({message: "Token inválido!"})
+        }
+        
         const atividade_id = request.params.atividade_id;
     
         database.select("*").table("usuario_atividade").where({atividade_id: atividade_id}).then(entrega=>{

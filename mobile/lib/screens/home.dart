@@ -41,7 +41,7 @@ class Home extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: fetchAtividades(),
+              future: fetchAtividades(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -143,7 +143,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Future<String> updateUser(BuildContext context, String nome, String email,
+  Future<void> updateUser(BuildContext context, String nome, String email,
       String senha, int userId) async {
     final url = 'http://localhost:4000/updateUser/$userId';
     final response = await http.put(
@@ -156,14 +156,17 @@ class Home extends StatelessWidget {
       }),
     );
 
-    if (response.statusCode == 200) {
-      return 'ok';
-    } else {
-      return 'erro';
+    if (response.statusCode == 401) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LogInScreen(),
+        ),
+      );
     }
   }
 
-  Future<String> updateEntrega(
+  Future<void> updateEntrega(
       BuildContext context, String nota, int atividade_id) async {
     final url = 'http://localhost:4000/updateUsuarioAtividade/$atividade_id';
     final response = await http.patch(
@@ -174,16 +177,18 @@ class Home extends StatelessWidget {
       }),
     );
 
-    if (response.statusCode == 200) {
-      return 'ok';
-    } else {
-      return 'erro';
+    if (response.statusCode == 401) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LogInScreen(),
+        ),
+      );
     }
   }
 
   void deleteUser(BuildContext context, int userId) async {
     final url = 'http://localhost:4000/deleteUser/$userId';
-    print('aqui - DELETE');
     final response = await http.delete(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json', 'X-Access-Token': token},
@@ -199,15 +204,18 @@ class Home extends StatelessWidget {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchAtividades() async {
+  Future<List<Map<String, dynamic>>> fetchAtividades(
+      BuildContext context) async {
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:4000/listAtividades'));
+      final response = await http.get(
+          Uri.parse('http://localhost:4000/listAtividades'),
+          headers: {'X-Access-Token': token});
+
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
         List<Map<String, dynamic>> atividades = [];
         for (var item in data) {
-          String entrega = await hasEntrega(item['id']);
+          String entrega = await hasEntrega(item['id'], context);
           atividades.add({
             'id': item['id'],
             'titulo': item['titulo'] as String,
@@ -216,6 +224,14 @@ class Home extends StatelessWidget {
           });
         }
         return atividades;
+      } else if (response.statusCode == 401) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LogInScreen(),
+          ),
+        );
+        return [];
       } else {
         throw Exception('Failed to load atividades');
       }
@@ -252,13 +268,21 @@ class Home extends StatelessWidget {
     return DateFormat('dd/MM/yyyy').format(dateTime);
   }
 
-  Future<String> hasEntrega(int atividade_id) async {
+  Future<String> hasEntrega(int atividade_id, BuildContext context) async {
     try {
-      final response = await http
-          .get(Uri.parse('http://localhost:4000/hasEntrega/$atividade_id'));
+      final response = await http.get(
+          Uri.parse('http://localhost:4000/hasEntrega/$atividade_id'),
+          headers: {'X-Access-Token': token});
       if (response.statusCode == 200) {
         return response.body;
-        // }
+      } else if (response.statusCode == 401) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LogInScreen(),
+          ),
+        );
+        return "ERRO";
       } else {
         throw Exception('Failed to load entregas');
       }
@@ -268,12 +292,22 @@ class Home extends StatelessWidget {
     }
   }
 
-  Future<Map<String, dynamic>> fetchEntrega(int atividade_id) async {
+  Future<Map<String, dynamic>?> fetchEntrega(
+      int atividade_id, BuildContext context) async {
     try {
-      final response = await http
-          .get(Uri.parse('http://localhost:4000/getEntrega/$atividade_id'));
+      final response = await http.get(
+          Uri.parse('http://localhost:4000/getEntrega/$atividade_id'),
+          headers: {"X-Access-Token": token});
       if (response.statusCode == 200) {
         return json.decode(response.body);
+      } else if (response.statusCode == 401) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LogInScreen(),
+          ),
+        );
+        return null;
       } else {
         throw Exception('Failed to load entregas');
       }
@@ -283,12 +317,22 @@ class Home extends StatelessWidget {
     }
   }
 
-  Future<Map<String, dynamic>> fetchUser(int userId) async {
+  Future<Map<String, dynamic>?> fetchUser(
+      int userId, BuildContext context) async {
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:4000/getUser/$userId'));
+      final response = await http.get(
+          Uri.parse('http://localhost:4000/getUser/$userId'),
+          headers: {'X-Access-Token': token});
       if (response.statusCode == 200) {
         return json.decode(response.body);
+      } else if (response.statusCode == 401) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LogInScreen(),
+          ),
+        );
+        return null;
       } else {
         throw Exception('Failed to load entregas');
       }
@@ -299,13 +343,19 @@ class Home extends StatelessWidget {
   }
 
   void showEntregaDetails(BuildContext context, int atividade_id) async {
-    final data = await fetchEntrega(atividade_id);
+    final data = await fetchEntrega(atividade_id, context);
+    if (data == null) {
+      return;
+    }
     int nota = data['nota'];
     _showEntregaDetailsDialog(context, nota, atividade_id);
   }
 
   void showUserDetails(BuildContext context, int userId) async {
-    final user = await fetchUser(userId);
+    final user = await fetchUser(userId, context);
+    if (user == null) {
+      return;
+    }
     _showUserDetailsDialog(context, userId, user);
   }
 

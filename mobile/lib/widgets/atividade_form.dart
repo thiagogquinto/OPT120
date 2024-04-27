@@ -53,22 +53,22 @@ class _AtividadeFormState extends State<AtividadeForm> {
         body: jsonEncode({
           'titulo': _tituloController.text,
           'descricao': _descricaoController.text,
+          // 'data': _selectedDate,
           'dia': _selectedDate != null ? _selectedDate!.toString() : null,
         }),
       );
 
       if (response.statusCode == 200) {
         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Home(
-              userId: widget.userId,
-              userName: widget.userName,
-              token: widget.token)
-          )
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => Home(
+                    userId: widget.userId,
+                    userName: widget.userName,
+                    token: widget.token)));
       } else if (response.statusCode == 401) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LogInScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LogInScreen()));
       }
     }
   }
@@ -112,6 +112,10 @@ class _AtividadeFormState extends State<AtividadeForm> {
                   ? '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
                   : '',
             ),
+            // onPressed: () => _selectDate(context),
+            // child: Text(_selectedDate != null
+            //     ? 'Data selecionada: ${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'
+            //     : 'Selecione uma data'),
           ),
           SizedBox(
             height: 20,
